@@ -25,9 +25,38 @@ next_y=680
 #Counter - don't change
 n=1
 
+
+#Set to 1 to enable appraising pokemon
+#This is slower but will give a more accurate IV
+appraise=1
+#Menu button coordinates
+menu_x=940
+menu_y=2050
+#Appraise button coordinates
+appraise_x=935
+appraise_y=1650
+
+
+
 #Change 10 to be however many pokemon you want to scan/rename
 while [ $n -le 10 ]
 do
+
+    if [ $appraise = 1 ]
+    then
+    echo "Opening Menu"
+    adb shell input tap $menu_x $menu_y
+    sleep .5
+    
+    echo "Tapping Appraise"
+    adb shell input tap $appraise_x $appraise_y
+    sleep .5
+    
+    echo "Skipping dialog 1"
+    adb shell input tap $center_x $center_y
+    sleep .5
+    fi
+    
     echo "Tapping Calcy"
     adb shell input tap $calcy_x $calcy_y
     sleep .5
@@ -35,7 +64,14 @@ do
     echo "Dismissing Calcy"
     adb shell input tap $center_x $center_y
     sleep .5
-
+    
+    if [ $appraise = 1 ]
+    then
+    echo "Skipping dialog 2"
+    adb shell input tap $center_x $center_y
+    sleep .5
+    fi
+    
     echo "Tapping Name"
     adb shell input tap $name_x $name_y
     sleep .5
@@ -53,7 +89,7 @@ do
 
     echo "Saving Rename"
     adb shell input tap $pogoOK_x $pogoOK_y
-    sleep .7
+    sleep 1
 
     echo "----Next Pokemon----"
     adb shell input tap $next_x $next_y
